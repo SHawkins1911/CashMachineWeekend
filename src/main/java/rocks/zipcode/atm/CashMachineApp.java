@@ -2,8 +2,7 @@ package rocks.zipcode.atm;
 
 import javafx.geometry.HPos;
 import javafx.geometry.Pos;
-import javafx.scene.layout.ColumnConstraints;
-import javafx.scene.layout.GridPane;
+import javafx.scene.layout.*;
 import javafx.scene.text.Text;
 import rocks.zipcode.atm.bank.Bank;
 import javafx.application.Application;
@@ -12,9 +11,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import javafx.scene.layout.FlowPane;
 
 /**
  * @author ZipCodeWilmington
@@ -74,7 +71,7 @@ public class CashMachineApp extends Application {
     private Parent createContentGrid(){
         GridPane grid = new GridPane();
         grid.setPrefSize(250,300);
-        //   grid.setGridLinesVisible(true);
+        //grid.setGridLinesVisible(true);
         grid.setHgap(10);
         grid.setVgap(5);
 
@@ -87,8 +84,8 @@ public class CashMachineApp extends Application {
         Text[] textFieldLabel = {new Text("ID:"),new Text("Name:"), new Text("Email:"),
                 new Text("Balance:"), new Text("Amount:")};
 
-        Text[] textFieldMessage = {new Text("IDError"),new Text("OverDraft"),
-                new Text("AmountError")};
+        Text[] textFieldMessage = {new Text(""),new Text(""),
+                new Text("")};
 
 
 
@@ -114,10 +111,16 @@ public class CashMachineApp extends Application {
         btnWithdraw.setDisable(true);
         btnLogout.setDisable(true);
 
-        btnLogin.setOnAction(e -> {
-            int id = Integer.parseInt(idField.getText());
-            cashMachine.login(id);
+//        textFieldMessage[0].setVisible(false);
+        textFieldMessage[1].setVisible(false);
+        textFieldMessage[2].setVisible(false);
 
+        btnLogin.setOnAction(e -> {
+            try {
+                int id = Integer.parseInt(idField.getText());
+                cashMachine.login(id);
+            } catch (Exception ex) { }
+            if (cashMachine.getAccountData() != null){
             idField.setEditable(false);
             btnDeposit.setDisable(false);
             btnWithdraw.setDisable(false);
@@ -128,7 +131,14 @@ public class CashMachineApp extends Application {
             balanceField.setDisable(false);
             amountField.setDisable(false);
 
-//            areaInfo.setText(cashMachine.toString());
+            nameField.setText(cashMachine.getAccountData().getName());
+            mailField.setText(cashMachine.getAccountData().getEmail());
+            balanceField.setText(Integer.toString(cashMachine.getAccountData().getBalance()));
+                textFieldMessage[0].setText("");
+            }
+            else textFieldMessage[0].setText("No such ID");
+
+
         });
 
         btnDeposit.setOnAction(e -> {
@@ -149,6 +159,7 @@ public class CashMachineApp extends Application {
         btnLogout.setOnAction(e -> {
             cashMachine.exit();
 
+            idField.setEditable(true);
             nameField.setDisable(true);
             mailField.setDisable(true);
             balanceField.setDisable(true);
@@ -175,7 +186,7 @@ public class CashMachineApp extends Application {
         grid.add(textFieldMessage[1],   1,6,3,1);
         grid.add(textFieldLabel[4],     0,7);
         grid.add(amountField,           1,7,3,1);
-        grid.add(textFieldMessage[2],   1,8,3,1);
+        grid.add(textFieldMessage[2],   1,8);
         grid.add(btnDeposit,            1,9);
         grid.add(btnWithdraw,           2,9);
 
@@ -196,6 +207,7 @@ public class CashMachineApp extends Application {
     public void start(Stage stage) throws Exception {
 //        stage.setScene(new Scene(createContent()));
         stage.setScene(new Scene(createContentGrid()));
+
         stage.show();
     }
 
