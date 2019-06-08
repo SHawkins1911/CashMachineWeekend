@@ -24,6 +24,7 @@ public class CashMachineApp extends Application {
     TextField mailField = new TextField();
     TextField balanceField = new TextField();
     TextField amountField = new TextField();
+    TextField accuntTypePlaceHolder = new TextField();
 
     Button btnLogin = new Button("Login");
     Button btnDeposit = new Button("Deposit");
@@ -37,7 +38,7 @@ public class CashMachineApp extends Application {
     private Parent createContentGrid(){
         GridPane grid = new GridPane();
         grid.setPrefSize(250,300);
-        //grid.setGridLinesVisible(true);
+ //       grid.setGridLinesVisible(true);
         grid.setHgap(10);
         grid.setVgap(5);
 
@@ -70,21 +71,36 @@ public class CashMachineApp extends Application {
         });
 
         btnDeposit.setOnAction(e -> {
-
-            Double amount = Double.parseDouble(amountField.getText());
-            cashMachine.deposit(amount);
+            Double pastAmount = cashMachine.getAccountData().getBalance();
+            try {
+                Double amount = Double.parseDouble(amountField.getText());
+                cashMachine.deposit(amount);
+            } catch (Exception ex){ }
             balanceField.setText(cashMachine.getAccountData().getBalnaceString());
             if (cashMachine.getAccountData().getBalance() >= 0)
                 odMessage.setText("");
+            if (pastAmount == cashMachine.getAccountData().getBalance())
+                withdrawMessage.setText("Deposit failed");
+            else
+                withdrawMessage.setText("");
+
         });
 
 
         btnWithdraw.setOnAction(e -> {
+            Double pastAmount = cashMachine.getAccountData().getBalance();
+            try {
             Double amount = Double.parseDouble(amountField.getText());
             cashMachine.withdraw(amount);
+            } catch (Exception ex){ }
             balanceField.setText(cashMachine.getAccountData().getBalnaceString());
             if (cashMachine.getAccountData().getBalance() < 0)
                 odMessage.setText("This account is overdrawn");
+            if (pastAmount == cashMachine.getAccountData().getBalance())
+                withdrawMessage.setText("Withdraw failed");
+            else
+                withdrawMessage.setText("");
+
         });
 
         btnLogout.setOnAction(e -> {
@@ -104,22 +120,24 @@ public class CashMachineApp extends Application {
         });
 
         grid.add(new Text("ID:"),       0,0);
-        grid.add(idField,               1,0,3,1);
-        grid.add(idMessage,             1,1,3,1);
+        grid.add(idField,               1,0,2,1);
+        grid.add(idMessage,             1,1,2,1);
         grid.add(btnLogin,              1,2);
         grid.add(btnLogout,             2,2);
         grid.add(new Text("Name:"),     0,3);
-        grid.add(nameField,             1,3,3,1);
+        grid.add(nameField,             1,3,2,1);
         grid.add(new Text("Email:"),    0,4);
-        grid.add(mailField,             1,4,3,1);
-        grid.add(new Text("Balance:"),  0,5,1,1);
-        grid.add(balanceField,          1,5,3,1);
-        grid.add(odMessage,             1,6,3,1);
-        grid.add(new Text("Amount:"),   0,7);
-        grid.add(amountField,           1,7,3,1);
-        grid.add(withdrawMessage,       1,8);
-        grid.add(btnDeposit,            1,9);
-        grid.add(btnWithdraw,           2,9);
+        grid.add(mailField,             1,4,2,1);
+        grid.add(new Text("Type:"),     0,5);
+        grid.add(accuntTypePlaceHolder, 1,5,2,1);
+        grid.add(new Text("Balance:"),  0,6,1,1);
+        grid.add(balanceField,          1,6,2,1);
+        grid.add(odMessage,             1,7,2,1);
+        grid.add(new Text("Amount:"),   0,8);
+        grid.add(amountField,           1,8,2,1);
+        grid.add(withdrawMessage,       1,9,2,1);
+        grid.add(btnDeposit,            1,10);
+        grid.add(btnWithdraw,           2,10);
 
         grid.setAlignment(Pos.CENTER);
 
@@ -129,6 +147,9 @@ public class CashMachineApp extends Application {
 
         GridPane.setHalignment(btnLogin,HPos.CENTER);
         GridPane.setHalignment(btnLogout,HPos.CENTER);
+
+        GridPane.setHalignment(btnDeposit,HPos.CENTER);
+        GridPane.setHalignment(btnWithdraw,HPos.CENTER);
 
         return grid;
     }
@@ -153,6 +174,7 @@ public class CashMachineApp extends Application {
 
         nameField.setDisable(value);
         mailField.setDisable(value);
+        accuntTypePlaceHolder.setDisable(value);
         balanceField.setDisable(value);
         amountField.setDisable(value);
 
