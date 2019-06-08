@@ -15,31 +15,59 @@ public abstract class Account {
         return accountData;
     }
 
-    public void deposit(double amount) {
+    public void depositChecking(double amount) {
         if (amount > 0) {
-            updateBalance(getBalance() + amount);
+            updateBalanceChecking(getCheckingBalance() + amount);
         }
     }
+
     public boolean withdraw(double amount) {
-        if (amount > 0 && canWithdraw(amount)) {
-            updateBalance(getBalance() - amount);
+        if (amount > 0 && canWithdrawChecking(amount)) {
+            updateBalanceChecking(getCheckingBalance() - amount);
             return true;
         } else {
             return false;
         }
     }
 
-    protected boolean canWithdraw(double amount) {
+    protected boolean canWithdrawChecking(double amount) {
 
-        return getBalance() >= amount;
+        return getCheckingBalance() >= amount;
     }
 
-    public double getBalance() {
-        return accountData.getBalance();
+    public double getCheckingBalance() {
+        return accountData.getCheckingBalance();
     }
 
-    private void updateBalance(double newBalance) {
+    private void updateBalanceChecking(double newCheckingBalance) {
         accountData = new AccountData(accountData.getId(), accountData.getName(), accountData.getEmail(),
-                newBalance);
+                newCheckingBalance, accountData.getSavingsBalance());
     }
-}
+        public void depositSavings ( double amount){
+            if (amount > 0) {
+                updateBalanceSavings(getSavingsBalance() + amount);
+            }
+        }
+        public boolean withdrawSavings ( double amount){
+            if (amount > 0 && canWithdrawChecking(amount)) {
+                updateBalanceSavings(getSavingsBalance() - amount);
+                return true;
+            } else {
+                return false;
+            }
+        }
+
+        protected boolean canWithdrawSavings ( double amount){
+
+            return getSavingsBalance() >= amount;
+        }
+
+        public double getSavingsBalance (){return accountData.getSavingsBalance();}
+
+
+        private void updateBalanceSavings ( double newSavingsBalance){
+            accountData = new AccountData(accountData.getId(), accountData.getName(), accountData.getEmail(),
+                    accountData.getCheckingBalance(), newSavingsBalance);
+        }
+    }
+

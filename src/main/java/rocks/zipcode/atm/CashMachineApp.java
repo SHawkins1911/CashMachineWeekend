@@ -74,7 +74,7 @@ public class CashMachineApp extends Application {
             Double amount = Double.parseDouble(amountField.getText());
             cashMachine.deposit(amount);
             balanceField.setText(cashMachine.getAccountData().getBalnaceString());
-            if (cashMachine.getAccountData().getBalance() >= 0)
+            if (cashMachine.getAccountData().getCheckingBalance() >= 0)
                 odMessage.setText("");
         });
 
@@ -83,7 +83,7 @@ public class CashMachineApp extends Application {
             Double amount = Double.parseDouble(amountField.getText());
             cashMachine.withdraw(amount);
             balanceField.setText(cashMachine.getAccountData().getBalnaceString());
-            if (cashMachine.getAccountData().getBalance() < 0)
+            if (cashMachine.getAccountData().getCheckingBalance() < 0)
                 odMessage.setText("This account is overdrawn");
         });
 
