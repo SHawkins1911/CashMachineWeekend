@@ -112,8 +112,8 @@ public class CashMachineApp extends Application {
         btnLogout.setDisable(true);
 
 //        textFieldMessage[0].setVisible(false);
-        textFieldMessage[1].setVisible(false);
-        textFieldMessage[2].setVisible(false);
+//        textFieldMessage[1].setVisible(false);
+//        textFieldMessage[2].setVisible(false);
 
         btnLogin.setOnAction(e -> {
             try {
@@ -133,7 +133,7 @@ public class CashMachineApp extends Application {
 
             nameField.setText(cashMachine.getAccountData().getName());
             mailField.setText(cashMachine.getAccountData().getEmail());
-            balanceField.setText(Integer.toString(cashMachine.getAccountData().getBalance()));
+            balanceField.setText(Double.toString(cashMachine.getAccountData().getBalance()));
                 textFieldMessage[0].setText("");
             }
             else textFieldMessage[0].setText("No such ID");
@@ -142,18 +142,20 @@ public class CashMachineApp extends Application {
         });
 
         btnDeposit.setOnAction(e -> {
-            int amount = Integer.parseInt(field.getText());
+            Double amount = Double.parseDouble(amountField.getText());
             cashMachine.deposit(amount);
-
-            areaInfo.setText(cashMachine.toString());
+            balanceField.setText(Double.toString(cashMachine.getAccountData().getBalance()));
+            if (cashMachine.getAccountData().getBalance() >= 0)
+                textFieldMessage[1].setText("");
         });
 
 
         btnWithdraw.setOnAction(e -> {
-            int amount = Integer.parseInt(field.getText());
+            Double amount = Double.parseDouble(amountField.getText());
             cashMachine.withdraw(amount);
-
-            areaInfo.setText(cashMachine.toString());
+            balanceField.setText(Double.toString(cashMachine.getAccountData().getBalance()));
+            if (cashMachine.getAccountData().getBalance() < 0)
+                textFieldMessage[1].setText("This account is overdrawn");
         });
 
         btnLogout.setOnAction(e -> {
@@ -164,6 +166,15 @@ public class CashMachineApp extends Application {
             mailField.setDisable(true);
             balanceField.setDisable(true);
             amountField.setDisable(true);
+
+            idField.clear();
+            nameField.clear();
+            mailField.clear();
+            balanceField.clear();
+            amountField.clear();
+
+            for (Text message : textFieldMessage)
+                message.setText("");
 
             btnDeposit.setDisable(true);
             btnWithdraw.setDisable(true);
