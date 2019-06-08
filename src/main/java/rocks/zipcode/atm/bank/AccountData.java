@@ -32,9 +32,7 @@ public final class AccountData {
 
     public double getBalance() {return balance;}
 
-    public String getBalnaceString() {
-        String balanceStr = Double.toString( balance);
-        return String.format("%.2f",balance);}
+    public String getBalnaceString() {return String.format("%.2f",balance);}
 
     @Override
     public String toString() {
