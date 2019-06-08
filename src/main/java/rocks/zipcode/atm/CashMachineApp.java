@@ -41,19 +41,8 @@ public class CashMachineApp extends Application {
         grid.setHgap(10);
         grid.setVgap(5);
 
-
-        Text[] textFieldLabel = {new Text("ID:"),new Text("Name:"), new Text("Email:"),
-                new Text("Balance:"), new Text("Amount:")};
-
-        Text[] textFieldMessage = {new Text(""),new Text(""),
-                new Text("")};
-
-
-
         TextArea areaInfo = new TextArea();
         areaInfo.setEditable(false);
-
-
 
         nameField.setEditable(false);
         mailField.setEditable(false);
@@ -112,11 +101,8 @@ public class CashMachineApp extends Application {
             idMessage.setText("");
             odMessage.setText("");
             withdrawMessage.setText("");
-
-//            areaInfo.setText(cashMachine.toString());
         });
-
-
+        
         grid.add(new Text("ID:"),       0,0);
         grid.add(idField,               1,0,3,1);
         grid.add(idMessage,             1,1,3,1);
@@ -134,7 +120,6 @@ public class CashMachineApp extends Application {
         grid.add(withdrawMessage,       1,8);
         grid.add(btnDeposit,            1,9);
         grid.add(btnWithdraw,           2,9);
-
 
         grid.setAlignment(Pos.CENTER);
 
