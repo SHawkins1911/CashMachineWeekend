@@ -102,7 +102,7 @@ public class CashMachineApp extends Application {
             odMessage.setText("");
             withdrawMessage.setText("");
         });
-        
+
         grid.add(new Text("ID:"),       0,0);
         grid.add(idField,               1,0,3,1);
         grid.add(idMessage,             1,1,3,1);
