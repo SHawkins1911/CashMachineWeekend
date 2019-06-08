@@ -34,7 +34,7 @@ public final class AccountData {
 
     public String getBalnaceString() {
         String balanceStr = Double.toString( balance);
-        return String.format("%.2f",balanceStr);}
+        return String.format("%.2f",balance);}
 
     @Override
     public String toString() {
