@@ -30,9 +30,11 @@ public final class AccountData {
         return email;
     }
 
-    public double getBalance() {
-        return balance;
-    }
+    public double getBalance() {return balance;}
+
+    public String getBalnaceString() {
+        String balanceStr = Double.toString( balance);
+        return String.format("%.2f",balanceStr);}
 
     @Override
     public String toString() {
