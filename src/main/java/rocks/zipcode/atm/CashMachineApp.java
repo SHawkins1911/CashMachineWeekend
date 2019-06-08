@@ -1,22 +1,29 @@
 package rocks.zipcode.atm;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.geometry.HPos;
 import javafx.geometry.Pos;
+import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.scene.text.Text;
 import rocks.zipcode.atm.bank.Bank;
 import javafx.application.Application;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+
+import javax.swing.text.ComponentView;
 
 /**
  * @author ZipCodeWilmington
  */
 public class CashMachineApp extends Application {
+
+    Menu menu1 = new Menu("Account");
+    Menu menu2 = new Menu("Help");
+
+
 
     private CashMachine cashMachine = new CashMachine(new Bank());
     TextField idField = new TextField();
@@ -24,7 +31,8 @@ public class CashMachineApp extends Application {
     TextField mailField = new TextField();
     TextField balanceField = new TextField();
     TextField amountField = new TextField();
-    TextField accuntTypePlaceHolder = new TextField();
+    ComboBox ComboBox = new ComboBox();
+    MenuBar menuBar = new MenuBar();
 
     Button btnLogin = new Button("Login");
     Button btnDeposit = new Button("Deposit");
@@ -36,7 +44,40 @@ public class CashMachineApp extends Application {
     Text withdrawMessage = new Text("");
 
     private Parent createContentGrid(){
+        VBox root = new VBox(10, menuBar);
+        menuBar.getMenus().add(menu1);
+        MenuItem menuItem1 = new MenuItem("Create Acccount");
+        MenuItem menuItem2 = new MenuItem("Change Password");
+        MenuItem menuItem3 = new MenuItem("Check Profile");
+
+        menu1.getItems().add(menuItem1);
+        menu1.getItems().add(menuItem2);
+        menu1.getItems().add(menuItem3);
+
+        menuBar.getMenus().add(menu2);
+        MenuItem menu2Item1 = new MenuItem("Contact Steffun");
+        MenuItem menu2Item2 = new MenuItem("Contact Anish");
+        MenuItem menu2Item3 = new MenuItem("Contact Joanna");
+
+        menu2.getItems().add(menu2Item1);
+        menu2.getItems().add(menu2Item2);
+        menu2.getItems().add(menu2Item3);
+
+
+
+        ComboBox.getItems().add("Checking");
+        ComboBox.getItems().add("Savings");
+        ComboBox.getItems().add("Choice 3");
+
+
+
+
+
+
+
+
         GridPane grid = new GridPane();
+        root.getChildren().add(grid);
         grid.setPrefSize(250,300);
  //       grid.setGridLinesVisible(true);
         grid.setHgap(10);
@@ -129,7 +170,7 @@ public class CashMachineApp extends Application {
         grid.add(new Text("Email:"),    0,4);
         grid.add(mailField,             1,4,2,1);
         grid.add(new Text("Type:"),     0,5);
-        grid.add(accuntTypePlaceHolder, 1,5,2,1);
+        grid.add(ComboBox, 1,5,2,1);
         grid.add(new Text("Balance:"),  0,6,1,1);
         grid.add(balanceField,          1,6,2,1);
         grid.add(odMessage,             1,7,2,1);
@@ -151,7 +192,7 @@ public class CashMachineApp extends Application {
         GridPane.setHalignment(btnDeposit,HPos.CENTER);
         GridPane.setHalignment(btnWithdraw,HPos.CENTER);
 
-        return grid;
+        return root;
     }
 
     @Override
@@ -174,7 +215,7 @@ public class CashMachineApp extends Application {
 
         nameField.setDisable(value);
         mailField.setDisable(value);
-        accuntTypePlaceHolder.setDisable(value);
+        ComboBox.setDisable(value);
         balanceField.setDisable(value);
         amountField.setDisable(value);
 
