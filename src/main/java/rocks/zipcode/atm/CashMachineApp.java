@@ -118,7 +118,7 @@ public class CashMachineApp extends Application {
                 cashMachine.deposit(amount);
             } catch (Exception ex){ }
             balanceField.setText(cashMachine.getAccountData().getBalnaceString());
-            if (cashMachine.getAccountData().getBalance() >= 0)
+            if (cashMachine.getAccountData().getCheckingBalance() >= 0)
                 odMessage.setText("");
             if (pastAmount == cashMachine.getAccountData().getBalance())
                 withdrawMessage.setText("Deposit failed");
@@ -135,7 +135,7 @@ public class CashMachineApp extends Application {
             cashMachine.withdraw(amount);
             } catch (Exception ex){ }
             balanceField.setText(cashMachine.getAccountData().getBalnaceString());
-            if (cashMachine.getAccountData().getBalance() < 0)
+            if (cashMachine.getAccountData().getCheckingBalance() < 0)
                 odMessage.setText("This account is overdrawn");
             if (pastAmount == cashMachine.getAccountData().getBalance())
                 withdrawMessage.setText("Withdraw failed");

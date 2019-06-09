@@ -9,13 +9,19 @@ public final class AccountData {
     private final String name;
     private final String email;
 
-    private final double balance;
+    private final double checkingBalance;
+    private final double savingsBalance;
 
-    AccountData(int id, String name, String email, double balance) {
+
+
+
+    AccountData(int id, String name, String email, double checkingBalance, double savingsBalance) {
         this.id = id;
         this.name = name;
         this.email = email;
-        this.balance = balance;
+        this.checkingBalance = checkingBalance;
+        this.savingsBalance = savingsBalance;
+
     }
 
     public int getId() {
@@ -29,16 +35,29 @@ public final class AccountData {
     public String getEmail() {
         return email;
     }
+    public double getCheckingBalance() {
+        return checkingBalance;
+    }
 
-    public double getBalance() {return balance;}
+    public double getSavingsBalance() {
+        return savingsBalance;
+    }
 
-    public String getBalnaceString() {return String.format("%.2f",balance);}
+    public double getTotalBalance() {return savingsBalance + checkingBalance;}
+
+    public String getBalnaceString() {return String.format("%.2f",getTotalBalance());}
+
+    public String getCheckingBalanceString(){return String.format("%.2f",getCheckingBalance());}
+
+    public String getSavingsBalanceString(){return String.format("%.2f",getSavingsBalance());}
 
     @Override
     public String toString() {
         return "Account id: " + id + '\n' +
                 "Name: " + name + '\n' +
                 "Email: " + email + '\n' +
-                "Balance: " + String.format("%.2f",balance);
+                "Checking Balance: " + String.format("%.2f",checkingBalance) + '\n' +
+                "Savings Balance: " + String.format("%.2f",savingsBalance)+ '\n' +
+                "Total Account Balance: " + String.format("%.2f",getTotalBalance());
     }
 }
