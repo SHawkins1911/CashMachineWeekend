@@ -85,4 +85,8 @@ public class CashMachine {
     public void setCurrentBalanceType(String currentBalanceType) {
         this.currentBalanceType = currentBalanceType;
     }
+
+    public void addAccount(Integer id, String name, String mail, String type){
+
+    }
 }
