@@ -31,7 +31,7 @@ public class CashMachineApp extends Application {
     TextField mailField = new TextField();
     TextField balanceField = new TextField();
     TextField amountField = new TextField();
-    ComboBox ComboBox = new ComboBox();
+    ComboBox balanceTypeBox = new ComboBox();
     MenuBar menuBar = new MenuBar();
 
     Button btnLogin = new Button("Login");
@@ -46,7 +46,7 @@ public class CashMachineApp extends Application {
     private Parent createContentGrid(){
         VBox root = new VBox(10, menuBar);
         menuBar.getMenus().add(menu1);
-        MenuItem menuItem1 = new MenuItem("Create Acccount");
+        MenuItem menuItem1 = new MenuItem("Create Account");
         MenuItem menuItem2 = new MenuItem("Change Password");
         MenuItem menuItem3 = new MenuItem("Check Profile");
 
@@ -63,18 +63,15 @@ public class CashMachineApp extends Application {
         menu2.getItems().add(menu2Item2);
         menu2.getItems().add(menu2Item3);
 
+        balanceTypeBox.getItems().add("Checking");
+        balanceTypeBox.getItems().add("Saving");
+//        balanceTypeBox.getItems().add("Choice 3");
 
-
-        ComboBox.getItems().add("Checking");
-        ComboBox.getItems().add("Savings");
-        ComboBox.getItems().add("Choice 3");
-
-
-
-
-
-
-
+        balanceTypeBox.setOnAction(e -> {
+            cashMachine.setCurrentBalanceType(balanceTypeBox.getValue().toString());
+            balanceField.setText(cashMachine.getAccountData().
+                    getBalanceString(cashMachine.getCurrentBalanceType()));
+        });
 
         GridPane grid = new GridPane();
         root.getChildren().add(grid);
@@ -103,7 +100,7 @@ public class CashMachineApp extends Application {
 
             nameField.setText(cashMachine.getAccountData().getName());
             mailField.setText(cashMachine.getAccountData().getEmail());
-            cashMachine.setCurrentBalanceType("Checking");
+            balanceTypeBox.setValue("Checking");
             balanceField.setText(cashMachine.getAccountData().
                     getBalanceString(cashMachine.getCurrentBalanceType()));
             idMessage.setText("");
@@ -158,7 +155,7 @@ public class CashMachineApp extends Application {
             mailField.clear();
             balanceField.clear();
             amountField.clear();
-
+            
             idMessage.setText("");
             odMessage.setText("");
             withdrawMessage.setText("");
@@ -174,7 +171,7 @@ public class CashMachineApp extends Application {
         grid.add(new Text("Email:"),    0,4);
         grid.add(mailField,             1,4,2,1);
         grid.add(new Text("Type:"),     0,5);
-        grid.add(ComboBox, 1,5,2,1);
+        grid.add(balanceTypeBox, 1,5,2,1);
         grid.add(new Text("Balance:"),  0,6,1,1);
         grid.add(balanceField,          1,6,2,1);
         grid.add(odMessage,             1,7,2,1);
@@ -219,7 +216,7 @@ public class CashMachineApp extends Application {
 
         nameField.setDisable(value);
         mailField.setDisable(value);
-        ComboBox.setDisable(value);
+        balanceTypeBox.setDisable(value);
         balanceField.setDisable(value);
         amountField.setDisable(value);
 

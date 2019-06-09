@@ -41,10 +41,10 @@ public abstract class Account {
     private void updateBalance(double newBalance, String balanceType) {
         if (balanceType.equals("Checking"))
             accountData = new AccountData(accountData.getId(), accountData.getName(), accountData.getEmail(),
-                newBalance, accountData.getBalance(balanceType));
+                newBalance, accountData.getBalance("Saving"));
         if (balanceType.equals("Saving"))
             accountData = new AccountData(accountData.getId(), accountData.getName(), accountData.getEmail(),
-                    accountData.getBalance(balanceType), newBalance);
+                    accountData.getBalance("Checking"), newBalance);
     }
 }
 
