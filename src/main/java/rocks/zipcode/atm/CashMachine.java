@@ -3,6 +3,9 @@ package rocks.zipcode.atm;
 import rocks.zipcode.atm.bank.AccountData;
 import rocks.zipcode.atm.bank.Bank;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.Scanner;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
@@ -22,6 +25,7 @@ public class CashMachine {
     private Consumer<AccountData> update = data -> {
         accountData = data;
     };
+
 
     public void login(int id) {
         tryCall(
