@@ -227,16 +227,6 @@ public class CashMachineApp extends Application {
         Button cancelBtn = new Button("Cancel");
         Button createBtn = new Button("Create");
 
-        cancelBtn.setOnAction(c -> {
-            newAccountWindow.close();
-            mainWindow.show();
-        });
-
-        createBtn.setOnAction(c -> {
-            newAccountWindow.close();
-            mainWindow.show();
-        });
-
         basicButton.setToggleGroup(accountTypeGroup);
         premiumButton.setToggleGroup(accountTypeGroup);
 
@@ -244,6 +234,20 @@ public class CashMachineApp extends Application {
 
         Text idErr = new Text("");
         Text mailErr = new Text("");
+
+        cancelBtn.setOnAction(c -> {
+            newAccountWindow.close();
+            mainWindow.show();
+        });
+
+        createBtn.setOnAction(c -> {
+            newAccountWindow.close();
+            cashMachine.addAccount(Integer.parseInt(newIdField.getText()),
+                    newNameField.getText(),
+                    newEmailField.getText(),
+                    "Basic");
+            mainWindow.show();
+        });
 
         grid.add(new Text("ID:"),       0,0);
         grid.add(newIdField,            1,0,2,1);

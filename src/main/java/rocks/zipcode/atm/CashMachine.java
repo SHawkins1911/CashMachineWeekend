@@ -87,6 +87,6 @@ public class CashMachine {
     }
 
     public void addAccount(Integer id, String name, String mail, String type){
-
+        bank.addAccount(id,name,mail,type);
     }
 }
