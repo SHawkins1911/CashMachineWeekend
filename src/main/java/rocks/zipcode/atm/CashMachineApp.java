@@ -23,6 +23,8 @@ public class CashMachineApp extends Application {
 
     private CashMachine cashMachine = new CashMachine(new Bank());
     TextField idField = new TextField();
+    TextField userNameField = new TextField();
+    TextField passwordField = new TextField();
     TextField nameField = new TextField();
     TextField mailField = new TextField();
     TextField balanceField = new TextField();
@@ -53,7 +55,7 @@ public class CashMachineApp extends Application {
         menu1.getItems().add(menuItem3);
 
         menuBar.getMenus().add(menu2);
-        MenuItem menu2Item1 = new MenuItem("Contact Steffun");
+        MenuItem menu2Item1 = new MenuItem("Contact Stefun");
         MenuItem menu2Item2 = new MenuItem("Contact Anish");
         MenuItem menu2Item3 = new MenuItem("Contact Joanna");
 
