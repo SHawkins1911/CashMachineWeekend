@@ -15,59 +15,36 @@ public abstract class Account {
         return accountData;
     }
 
-    public void depositChecking(double amount) {
+    public void deposit(double amount, String balanceType) {
         if (amount > 0) {
-            updateBalanceChecking(getCheckingBalance() + amount);
+                updateBalance(getBalance(balanceType) + amount, balanceType);
         }
     }
 
-    public boolean withdraw(double amount) {
-        if (amount > 0 && canWithdrawChecking(amount)) {
-            updateBalanceChecking(getCheckingBalance() - amount);
+    public boolean withdraw(double amount, String balanceType) {
+        if (amount > 0 && canWithdraw(amount, balanceType)) {
+            updateBalance(getBalance(balanceType) - amount, balanceType);
             return true;
         } else {
             return false;
         }
     }
 
-    protected boolean canWithdrawChecking(double amount) {
-
-        return getCheckingBalance() >= amount;
+    protected boolean canWithdraw(double amount, String BalanceType) {
+            return getBalance(BalanceType) >= amount;
     }
 
-    public double getCheckingBalance() {
-        return accountData.getCheckingBalance();
+    public double getBalance(String balanceType) {
+        return accountData.getBalance(balanceType);
     }
 
-    private void updateBalanceChecking(double newCheckingBalance) {
-        accountData = new AccountData(accountData.getId(), accountData.getName(), accountData.getEmail(),
-                newCheckingBalance, accountData.getSavingsBalance());
-    }
-        public void depositSavings ( double amount){
-            if (amount > 0) {
-                updateBalanceSavings(getSavingsBalance() + amount);
-            }
-        }
-        public boolean withdrawSavings ( double amount){
-            if (amount > 0 && canWithdrawChecking(amount)) {
-                updateBalanceSavings(getSavingsBalance() - amount);
-                return true;
-            } else {
-                return false;
-            }
-        }
-
-        protected boolean canWithdrawSavings ( double amount){
-
-            return getSavingsBalance() >= amount;
-        }
-
-        public double getSavingsBalance (){return accountData.getSavingsBalance();}
-
-
-        private void updateBalanceSavings ( double newSavingsBalance){
+    private void updateBalance(double newBalance, String balanceType) {
+        if (balanceType.equals("Checking"))
             accountData = new AccountData(accountData.getId(), accountData.getName(), accountData.getEmail(),
-                    accountData.getCheckingBalance(), newSavingsBalance);
-        }
+                newBalance, accountData.getBalance("Saving"));
+        if (balanceType.equals("Saving"))
+            accountData = new AccountData(accountData.getId(), accountData.getName(), accountData.getEmail(),
+                    accountData.getBalance("Checking"), newBalance);
     }
+}
 

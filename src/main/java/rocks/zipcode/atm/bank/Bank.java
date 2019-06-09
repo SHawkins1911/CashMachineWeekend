@@ -30,21 +30,21 @@ public class Bank {
         }
     }
 
-    public ActionResult<AccountData> deposit(AccountData accountData, double amount) {
+    public ActionResult<AccountData> deposit(AccountData accountData, double amount, String balanceType) {
         Account account = accounts.get(accountData.getId());
-        account.deposit(amount);
+        account.deposit(amount, balanceType);
 
         return ActionResult.success(account.getAccountData());
     }
 
-    public ActionResult<AccountData> withdraw(AccountData accountData, double amount) {
+    public ActionResult<AccountData> withdraw(AccountData accountData, double amount, String balanceType) {
         Account account = accounts.get(accountData.getId());
-        boolean ok = account.withdraw(amount);
+        boolean ok = account.withdraw(amount, balanceType);
 
         if (ok) {
             return ActionResult.success(account.getAccountData());
         } else {
-            return ActionResult.fail("Withdraw failed: " + amount + ". Account has: " + account.getBalance());
+            return ActionResult.fail("Withdraw failed: " + amount + ". Account has: " + account.getBalance(balanceType));
         }
     }
 }

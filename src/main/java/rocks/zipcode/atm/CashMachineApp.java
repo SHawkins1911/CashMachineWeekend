@@ -2,21 +2,24 @@ package rocks.zipcode.atm;
 
 import javafx.geometry.HPos;
 import javafx.geometry.Pos;
+import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.scene.text.Text;
 import rocks.zipcode.atm.bank.Bank;
 import javafx.application.Application;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+
 
 /**
  * @author ZipCodeWilmington
  */
 public class CashMachineApp extends Application {
+
+    Menu menu1 = new Menu("Account");
+    Menu menu2 = new Menu("Help");
+
 
     private CashMachine cashMachine = new CashMachine(new Bank());
     TextField idField = new TextField();
@@ -24,6 +27,12 @@ public class CashMachineApp extends Application {
     TextField mailField = new TextField();
     TextField balanceField = new TextField();
     TextField amountField = new TextField();
+    ComboBox balanceTypeBox = new ComboBox();
+    
+    MenuBar menuBar = new MenuBar();
+    MenuItem menuItem1 = new MenuItem("Create Account");
+    MenuItem menuItem2 = new MenuItem("Change Password");
+    MenuItem menuItem3 = new MenuItem("Check Profile");
 
     Button btnLogin = new Button("Login");
     Button btnDeposit = new Button("Deposit");
@@ -35,9 +44,37 @@ public class CashMachineApp extends Application {
     Text withdrawMessage = new Text("");
 
     private Parent createContentGrid(){
+        VBox root = new VBox(10, menuBar);
+        menuBar.getMenus().add(menu1);
+
+
+        menu1.getItems().add(menuItem1);
+        menu1.getItems().add(menuItem2);
+        menu1.getItems().add(menuItem3);
+
+        menuBar.getMenus().add(menu2);
+        MenuItem menu2Item1 = new MenuItem("Contact Steffun");
+        MenuItem menu2Item2 = new MenuItem("Contact Anish");
+        MenuItem menu2Item3 = new MenuItem("Contact Joanna");
+
+        menu2.getItems().add(menu2Item1);
+        menu2.getItems().add(menu2Item2);
+        menu2.getItems().add(menu2Item3);
+
+        balanceTypeBox.getItems().add("Checking");
+        balanceTypeBox.getItems().add("Saving");
+//        balanceTypeBox.getItems().add("Choice 3");
+
+        balanceTypeBox.setOnAction(e -> {
+            cashMachine.setCurrentBalanceType(balanceTypeBox.getValue().toString());
+            balanceField.setText(cashMachine.getAccountData().
+                    getBalanceString(cashMachine.getCurrentBalanceType()));
+        });
+
         GridPane grid = new GridPane();
+        root.getChildren().add(grid);
         grid.setPrefSize(250,300);
-        //grid.setGridLinesVisible(true);
+ //       grid.setGridLinesVisible(true);
         grid.setHgap(10);
         grid.setVgap(5);
 
@@ -61,8 +98,10 @@ public class CashMachineApp extends Application {
 
             nameField.setText(cashMachine.getAccountData().getName());
             mailField.setText(cashMachine.getAccountData().getEmail());
-            balanceField.setText(cashMachine.getAccountData().getBalnaceString());
-                idMessage.setText("");
+            balanceTypeBox.setValue("Checking");
+            balanceField.setText(cashMachine.getAccountData().
+                    getBalanceString(cashMachine.getCurrentBalanceType()));
+            idMessage.setText("");
             }
             else idMessage.setText("No such ID");
 
@@ -70,21 +109,38 @@ public class CashMachineApp extends Application {
         });
 
         btnDeposit.setOnAction(e -> {
-
-            Double amount = Double.parseDouble(amountField.getText());
-            cashMachine.deposit(amount);
-            balanceField.setText(cashMachine.getAccountData().getBalnaceString());
-            if (cashMachine.getAccountData().getCheckingBalance() >= 0)
+            Double pastAmount = cashMachine.getAccountData().getBalance(cashMachine.getCurrentBalanceType());
+            try {
+                Double amount = Double.parseDouble(amountField.getText());
+                cashMachine.deposit(amount);
+            } catch (Exception ex){ }
+            balanceField.setText(cashMachine.getAccountData().
+                    getBalanceString(cashMachine.getCurrentBalanceType()));
+            if (cashMachine.getAccountData().getBalance(cashMachine.getCurrentBalanceType()) >= 0)
                 odMessage.setText("");
+            if (pastAmount == cashMachine.getAccountData().getBalance(cashMachine.getCurrentBalanceType()))
+                withdrawMessage.setText("Deposit failed");
+            else
+                withdrawMessage.setText("");
+
         });
 
 
         btnWithdraw.setOnAction(e -> {
+            Double pastAmount = cashMachine.getAccountData().getBalance(cashMachine.getCurrentBalanceType());
+            try {
             Double amount = Double.parseDouble(amountField.getText());
             cashMachine.withdraw(amount);
-            balanceField.setText(cashMachine.getAccountData().getBalnaceString());
-            if (cashMachine.getAccountData().getCheckingBalance() < 0)
+            } catch (Exception ex){ }
+            balanceField.setText(cashMachine.getAccountData().
+                    getBalanceString(cashMachine.getCurrentBalanceType()));
+            if (cashMachine.getAccountData().getBalance(cashMachine.getCurrentBalanceType()) < 0)
                 odMessage.setText("This account is overdrawn");
+            if (pastAmount == cashMachine.getAccountData().getBalance(cashMachine.getCurrentBalanceType()))
+                withdrawMessage.setText("Withdraw failed");
+            else
+                withdrawMessage.setText("");
+
         });
 
         btnLogout.setOnAction(e -> {
@@ -104,22 +160,24 @@ public class CashMachineApp extends Application {
         });
 
         grid.add(new Text("ID:"),       0,0);
-        grid.add(idField,               1,0,3,1);
-        grid.add(idMessage,             1,1,3,1);
+        grid.add(idField,               1,0,2,1);
+        grid.add(idMessage,             1,1,2,1);
         grid.add(btnLogin,              1,2);
         grid.add(btnLogout,             2,2);
         grid.add(new Text("Name:"),     0,3);
-        grid.add(nameField,             1,3,3,1);
+        grid.add(nameField,             1,3,2,1);
         grid.add(new Text("Email:"),    0,4);
-        grid.add(mailField,             1,4,3,1);
-        grid.add(new Text("Balance:"),  0,5,1,1);
-        grid.add(balanceField,          1,5,3,1);
-        grid.add(odMessage,             1,6,3,1);
-        grid.add(new Text("Amount:"),   0,7);
-        grid.add(amountField,           1,7,3,1);
-        grid.add(withdrawMessage,       1,8);
-        grid.add(btnDeposit,            1,9);
-        grid.add(btnWithdraw,           2,9);
+        grid.add(mailField,             1,4,2,1);
+        grid.add(new Text("Type:"),     0,5);
+        grid.add(balanceTypeBox, 1,5,2,1);
+        grid.add(new Text("Balance:"),  0,6,1,1);
+        grid.add(balanceField,          1,6,2,1);
+        grid.add(odMessage,             1,7,2,1);
+        grid.add(new Text("Amount:"),   0,8);
+        grid.add(amountField,           1,8,2,1);
+        grid.add(withdrawMessage,       1,9,2,1);
+        grid.add(btnDeposit,            1,10);
+        grid.add(btnWithdraw,           2,10);
 
         grid.setAlignment(Pos.CENTER);
 
@@ -130,7 +188,10 @@ public class CashMachineApp extends Application {
         GridPane.setHalignment(btnLogin,HPos.CENTER);
         GridPane.setHalignment(btnLogout,HPos.CENTER);
 
-        return grid;
+        GridPane.setHalignment(btnDeposit,HPos.CENTER);
+        GridPane.setHalignment(btnWithdraw,HPos.CENTER);
+
+        return root;
     }
 
     @Override
@@ -153,6 +214,7 @@ public class CashMachineApp extends Application {
 
         nameField.setDisable(value);
         mailField.setDisable(value);
+        balanceTypeBox.setDisable(value);
         balanceField.setDisable(value);
         amountField.setDisable(value);
 
