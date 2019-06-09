@@ -22,7 +22,7 @@ public class CashMachineApp extends Application {
 
     Menu menu1 = new Menu("Account");
     Menu menu2 = new Menu("Help");
-    
+
     private CashMachine cashMachine = new CashMachine(new Bank());
     TextField idField = new TextField();
     TextField userNameField = new TextField();
@@ -54,7 +54,7 @@ public class CashMachineApp extends Application {
 
     private Parent createContentGrid(){
         VBox root = new VBox(10, menuBar);
-        root.setPrefSize(275,375);
+        root.setPrefSize(275,450);
         menuBar.getMenus().add(menu1);
 
 
@@ -109,12 +109,13 @@ public class CashMachineApp extends Application {
 
         btnLogin.setOnAction(e -> {
             try {
-                int id = Integer.parseInt(idField.getText());
-                cashMachine.login(id);
+                String username = userNameField.getText();
+                cashMachine.login(username);
             } catch (Exception ex) { }
             if (cashMachine.getAccountData() != null){
             setDisable(false);
 
+            idField.setText(cashMachine.getAccountData().getId().toString());
             nameField.setText(cashMachine.getAccountData().getName());
             mailField.setText(cashMachine.getAccountData().getEmail());
             balanceTypeBox.setValue("Checking");
@@ -178,25 +179,29 @@ public class CashMachineApp extends Application {
             withdrawMessage.setText("");
         });
 
-        grid.add(new Text("ID:"),       0,0);
-        grid.add(idField,               1,0,2,1);
-        grid.add(idMessage,             1,1,2,1);
-        grid.add(btnLogin,              1,2);
-        grid.add(btnLogout,             2,2);
-        grid.add(new Text("Name:"),     0,3);
-        grid.add(nameField,             1,3,2,1);
-        grid.add(new Text("Email:"),    0,4);
-        grid.add(mailField,             1,4,2,1);
-        grid.add(new Text("Type:"),     0,5);
-        grid.add(balanceTypeBox, 1,5,2,1);
-        grid.add(new Text("Balance:"),  0,6,1,1);
-        grid.add(balanceField,          1,6,2,1);
-        grid.add(odMessage,             1,7,2,1);
-        grid.add(new Text("Amount:"),   0,8);
-        grid.add(amountField,           1,8,2,1);
-        grid.add(withdrawMessage,       1,9,2,1);
-        grid.add(btnDeposit,            1,10);
-        grid.add(btnWithdraw,           2,10);
+        grid.add(new Text("Username:"), 0,0);
+        grid.add(userNameField,         1,0,2,1);
+        grid.add(new Text("Password:"), 0,1);
+        grid.add(passwordField,         1,1,2,1);
+        grid.add(idMessage,             1,2,2,1);
+        grid.add(btnLogin,              1,3);
+        grid.add(btnLogout,             2,3);
+        grid.add(new Text("ID:"),       0,4);
+        grid.add(idField,               1,4,2,1);
+        grid.add(new Text("Name:"),     0,5);
+        grid.add(nameField,             1,5,2,1);
+        grid.add(new Text("Email:"),    0,6);
+        grid.add(mailField,             1,6,2,1);
+        grid.add(new Text("Type:"),     0,7);
+        grid.add(balanceTypeBox,        1,7,2,1);
+        grid.add(new Text("Balance:"),  0,8,1,1);
+        grid.add(balanceField,          1,8,2,1);
+        grid.add(odMessage,             1,9,2,1);
+        grid.add(new Text("Amount:"),   0,10);
+        grid.add(amountField,           1,10,2,1);
+        grid.add(withdrawMessage,       1,11,2,1);
+        grid.add(btnDeposit,            1,12);
+        grid.add(btnWithdraw,           2,12);
 
         grid.setAlignment(Pos.CENTER);
 
@@ -247,6 +252,8 @@ public class CashMachineApp extends Application {
         createBtn.setOnAction(c -> {
             newAccountWindow.close();
             cashMachine.addAccount(Integer.parseInt(newIdField.getText()),
+                    "placeHolder",
+                    "placeHolder",
                     newNameField.getText(),
                     newEmailField.getText(),
                     "Basic");
@@ -292,17 +299,20 @@ public class CashMachineApp extends Application {
     }
 
     private void setDisable(Boolean value) {
-        idField.setEditable(value);
+
+        userNameField.setEditable(value);
+        passwordField.setEditable(value);
         btnLogin.setDisable(!value);
         btnDeposit.setDisable(value);
-        btnWithdraw.setDisable(value);
-        btnLogout.setDisable(value);
 
+        idField.setDisable(value);
         nameField.setDisable(value);
         mailField.setDisable(value);
         balanceTypeBox.setDisable(value);
         balanceField.setDisable(value);
         amountField.setDisable(value);
+        btnWithdraw.setDisable(value);
+        btnLogout.setDisable(value);
 
     }
 }

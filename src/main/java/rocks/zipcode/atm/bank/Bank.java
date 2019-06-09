@@ -10,23 +10,23 @@ import java.util.Map;
  */
 public class Bank {
 
-    private Map<Integer, Account> accounts = new HashMap<>();
+    private Map<String, Account> accounts = new HashMap<>();
 
     public Bank() {
-        accounts.put(1000, new BasicAccount(new AccountData(
-                1000, "Example 1", "example1@gmail.com", 500, 500)));
+        accounts.put("example1", new BasicAccount(new AccountData(
+                1000, "example1","pass", "Example 1", "example1@gmail.com", 500, 500)));
 
-        accounts.put(2000, new PremiumAccount(new AccountData(
-                2000, "Example 2", "example2@gmail.com", 200, 500)));
+        accounts.put("example2", new PremiumAccount(new AccountData(
+                2000, "example2","pass","Example 2", "example2@gmail.com", 200, 500)));
     }
 
-    public ActionResult<AccountData> getAccountById(int id) {
-        Account account = accounts.get(id);
+    public ActionResult<AccountData> getAccountByUsername(String username) {
+        Account account = accounts.get(username);
 
         if (account != null) {
             return ActionResult.success(account.getAccountData());
         } else {
-            return ActionResult.fail("No account with id: " + id + "\nTry account 1000 or 2000");
+            return ActionResult.fail("No account with username: "+username);
         }
     }
 
@@ -48,12 +48,12 @@ public class Bank {
         }
     }
 
-    public void addAccount(Integer id, String name, String mail, String type){
+    public void addAccount(Integer id,String userName, String password, String name, String mail, String type){
         if (type.equals("Basic"))
-           accounts.put(id, new BasicAccount(new AccountData(
-                id, name, mail, 0, 0)));
+           accounts.put(userName, new BasicAccount(new AccountData(
+                id, userName, password, name, mail, 0, 0)));
         if (type.equals("Premium"))
-            accounts.put(id, new PremiumAccount(new AccountData(
-                    id, name, mail, 0, 0)));
+            accounts.put(userName, new PremiumAccount(new AccountData(
+                    id, userName, password, name, mail, 0, 0)));
     }
 }

@@ -27,9 +27,9 @@ public class CashMachine {
     };
 
 
-    public void login(int id) {
+    public void login(String username) {
         tryCall(
-                () -> bank.getAccountById(id),
+                () -> bank.getAccountByUsername(username),
                 update
         );
     }
@@ -90,7 +90,7 @@ public class CashMachine {
         this.currentBalanceType = currentBalanceType;
     }
 
-    public void addAccount(Integer id, String name, String mail, String type){
-        bank.addAccount(id,name,mail,type);
+    public void addAccount(Integer id,String userName, String password, String name, String mail, String type){
+        bank.addAccount(id,userName,password,name,mail,type);
     }
 }

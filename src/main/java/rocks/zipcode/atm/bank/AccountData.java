@@ -5,7 +5,7 @@ package rocks.zipcode.atm.bank;
  */
 public final class AccountData {
 
-    private final int id;
+    private final Integer id;
     private final String name;
     private final String email;
     private final String password;
@@ -29,7 +29,7 @@ public final class AccountData {
 
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
