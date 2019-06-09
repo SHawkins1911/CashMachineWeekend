@@ -3,13 +3,22 @@ package rocks.zipcode.atm;
 import javafx.geometry.HPos;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.Menu;
+import javafx.scene.control.MenuBar;
+import javafx.scene.control.MenuItem;
+import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import rocks.zipcode.atm.bank.Bank;
 import javafx.application.Application;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+
+import java.awt.*;
 
 
 /**
@@ -118,7 +127,11 @@ public class CashMachineApp extends Application {
                     getBalanceString(cashMachine.getCurrentBalanceType()));
             idMessage.setText("");
             }
-            else idMessage.setText("No such ID");
+            else {
+
+                idMessage.setText("No such ID");
+                idMessage.setFill(Color.RED);
+            }
 
 
         });
@@ -137,6 +150,7 @@ public class CashMachineApp extends Application {
                 withdrawMessage.setText("Deposit failed");
             else
                 withdrawMessage.setText("");
+            withdrawMessage.setFill(Color.RED);
 
         });
 
@@ -155,6 +169,8 @@ public class CashMachineApp extends Application {
                 withdrawMessage.setText("Withdraw failed");
             else
                 withdrawMessage.setText("");
+            odMessage.setFill(Color.RED);
+            withdrawMessage.setFill(Color.RED);
 
         });
 
