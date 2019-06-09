@@ -1,7 +1,5 @@
 package rocks.zipcode.atm;
 
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.geometry.HPos;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
@@ -13,7 +11,6 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
-import javax.swing.text.ComponentView;
 
 /**
  * @author ZipCodeWilmington
@@ -24,7 +21,6 @@ public class CashMachineApp extends Application {
     Menu menu2 = new Menu("Help");
 
 
-
     private CashMachine cashMachine = new CashMachine(new Bank());
     TextField idField = new TextField();
     TextField nameField = new TextField();
@@ -32,7 +28,11 @@ public class CashMachineApp extends Application {
     TextField balanceField = new TextField();
     TextField amountField = new TextField();
     ComboBox balanceTypeBox = new ComboBox();
+    
     MenuBar menuBar = new MenuBar();
+    MenuItem menuItem1 = new MenuItem("Create Account");
+    MenuItem menuItem2 = new MenuItem("Change Password");
+    MenuItem menuItem3 = new MenuItem("Check Profile");
 
     Button btnLogin = new Button("Login");
     Button btnDeposit = new Button("Deposit");
@@ -46,9 +46,7 @@ public class CashMachineApp extends Application {
     private Parent createContentGrid(){
         VBox root = new VBox(10, menuBar);
         menuBar.getMenus().add(menu1);
-        MenuItem menuItem1 = new MenuItem("Create Account");
-        MenuItem menuItem2 = new MenuItem("Change Password");
-        MenuItem menuItem3 = new MenuItem("Check Profile");
+
 
         menu1.getItems().add(menuItem1);
         menu1.getItems().add(menuItem2);
@@ -155,7 +153,7 @@ public class CashMachineApp extends Application {
             mailField.clear();
             balanceField.clear();
             amountField.clear();
-            
+
             idMessage.setText("");
             odMessage.setText("");
             withdrawMessage.setText("");
