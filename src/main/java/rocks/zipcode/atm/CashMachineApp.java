@@ -17,6 +17,9 @@ import javafx.stage.Stage;
  */
 public class CashMachineApp extends Application {
 
+    Stage mainWindow;
+    Stage newAccountWindow;
+
     Menu menu1 = new Menu("Account");
     Menu menu2 = new Menu("Help");
 
@@ -28,11 +31,16 @@ public class CashMachineApp extends Application {
     TextField balanceField = new TextField();
     TextField amountField = new TextField();
     ComboBox balanceTypeBox = new ComboBox();
-    
+
     MenuBar menuBar = new MenuBar();
     MenuItem menuItem1 = new MenuItem("Create Account");
     MenuItem menuItem2 = new MenuItem("Change Password");
     MenuItem menuItem3 = new MenuItem("Check Profile");
+
+    MenuItem menu2Item1 = new MenuItem("Contact Steffun");
+    MenuItem menu2Item2 = new MenuItem("Contact Anish");
+    MenuItem menu2Item3 = new MenuItem("Contact Joanna");
+
 
     Button btnLogin = new Button("Login");
     Button btnDeposit = new Button("Deposit");
@@ -45,6 +53,7 @@ public class CashMachineApp extends Application {
 
     private Parent createContentGrid(){
         VBox root = new VBox(10, menuBar);
+        root.setPrefSize(275,375);
         menuBar.getMenus().add(menu1);
 
 
@@ -53,13 +62,23 @@ public class CashMachineApp extends Application {
         menu1.getItems().add(menuItem3);
 
         menuBar.getMenus().add(menu2);
-        MenuItem menu2Item1 = new MenuItem("Contact Steffun");
-        MenuItem menu2Item2 = new MenuItem("Contact Anish");
-        MenuItem menu2Item3 = new MenuItem("Contact Joanna");
 
         menu2.getItems().add(menu2Item1);
         menu2.getItems().add(menu2Item2);
         menu2.getItems().add(menu2Item3);
+
+        menuItem1.setOnAction(e -> {
+            newAccountWindow = new Stage();
+            newAccountWindow.setScene(new Scene(createNewAccountWindow()));
+            newAccountWindow.setTitle("Create a new account");
+            newAccountWindow.setOnCloseRequest(s -> {
+                mainWindow.show();
+            });
+            newAccountWindow.show();
+            mainWindow.hide();
+
+
+        });
 
         balanceTypeBox.getItems().add("Checking");
         balanceTypeBox.getItems().add("Saving");
@@ -73,10 +92,6 @@ public class CashMachineApp extends Application {
 
         GridPane grid = new GridPane();
         root.getChildren().add(grid);
-        grid.setPrefSize(250,300);
- //       grid.setGridLinesVisible(true);
-        grid.setHgap(10);
-        grid.setVgap(5);
 
         TextArea areaInfo = new TextArea();
         areaInfo.setEditable(false);
@@ -184,6 +199,10 @@ public class CashMachineApp extends Application {
         ColumnConstraints textColumnRight = new ColumnConstraints();
         textColumnRight.setHalignment(HPos.RIGHT);
         grid.getColumnConstraints().add(textColumnRight);
+        //       grid.setGridLinesVisible(true);
+        grid.setHgap(10);
+        grid.setVgap(5);
+
 
         GridPane.setHalignment(btnLogin,HPos.CENTER);
         GridPane.setHalignment(btnLogout,HPos.CENTER);
@@ -194,11 +213,70 @@ public class CashMachineApp extends Application {
         return root;
     }
 
+    public Parent createNewAccountWindow(){
+        GridPane grid = new GridPane();
+
+        TextField newIdField = new TextField();
+        TextField newNameField = new TextField();
+        TextField newEmailField = new TextField();
+
+        ToggleGroup accountTypeGroup = new ToggleGroup();
+        RadioButton basicButton = new RadioButton("Basic");
+        RadioButton premiumButton = new RadioButton("Premium");
+
+        Button cancelBtn = new Button("Cancel");
+        Button createBtn = new Button("Create");
+
+        cancelBtn.setOnAction(c -> {
+            newAccountWindow.close();
+            mainWindow.show();
+        });
+
+        createBtn.setOnAction(c -> {
+            newAccountWindow.close();
+            mainWindow.show();
+        });
+
+        basicButton.setToggleGroup(accountTypeGroup);
+        premiumButton.setToggleGroup(accountTypeGroup);
+
+        basicButton.setSelected(true);
+
+        Text idErr = new Text("");
+        Text mailErr = new Text("");
+
+        grid.add(new Text("ID:"),       0,0);
+        grid.add(newIdField,            1,0,2,1);
+        grid.add(idErr,                 1,1,2,1);
+        grid.add(new Text("Name:"),     0,2);
+        grid.add(newNameField,          1,2,2,1);
+        grid.add(new Text("Email:"),    0,3);
+        grid.add(newEmailField,         1,3,2,1);
+        grid.add(mailErr,               1,4,2,1);
+        grid.add(new Text("Type:"),     0,5);
+        grid.add(basicButton,           1,5);
+        grid.add(premiumButton,         2,5);
+        grid.add(cancelBtn,             1,6);
+        grid.add(createBtn,             2,6);
+        ColumnConstraints textColumnRight = new ColumnConstraints();
+        textColumnRight.setHalignment(HPos.RIGHT);
+        grid.getColumnConstraints().add(textColumnRight);
+        //       grid.setGridLinesVisible(true);
+        grid.setPrefSize(250,225);
+        grid.setAlignment(Pos.CENTER);
+        grid.setHgap(10);
+        grid.setVgap(5);
+
+        return grid;
+    }
+
+
     @Override
     public void start(Stage stage) throws Exception {
-        stage.setScene(new Scene(createContentGrid()));
+        mainWindow = stage;
+        mainWindow.setScene(new Scene(createContentGrid()));
 
-        stage.show();
+        mainWindow.show();
     }
 
     public static void main(String[] args) {
