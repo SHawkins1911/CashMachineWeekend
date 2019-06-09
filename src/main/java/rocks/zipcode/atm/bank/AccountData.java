@@ -35,21 +35,20 @@ public final class AccountData {
     public String getEmail() {
         return email;
     }
-    public double getCheckingBalance() {
-        return checkingBalance;
+    public double getBalance(String balanceType) {
+        if (balanceType.equals("Checking"))
+            return checkingBalance;
+        if (balanceType.equals("Saving"))
+            return savingsBalance;
+        return -999;
     }
 
-    public double getSavingsBalance() {
-        return savingsBalance;
-    }
 
     public double getTotalBalance() {return savingsBalance + checkingBalance;}
 
-    public String getBalnaceString() {return String.format("%.2f",getTotalBalance());}
-
-    public String getCheckingBalanceString(){return String.format("%.2f",getCheckingBalance());}
-
-    public String getSavingsBalanceString(){return String.format("%.2f",getSavingsBalance());}
+    public String getBalanceString(String balanceType) {
+        return String.format("%.2f",getBalance(balanceType));
+    }
 
     @Override
     public String toString() {

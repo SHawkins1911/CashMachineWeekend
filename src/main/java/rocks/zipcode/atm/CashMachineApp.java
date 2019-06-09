@@ -103,8 +103,10 @@ public class CashMachineApp extends Application {
 
             nameField.setText(cashMachine.getAccountData().getName());
             mailField.setText(cashMachine.getAccountData().getEmail());
-            balanceField.setText(cashMachine.getAccountData().getBalnaceString());
-                idMessage.setText("");
+            cashMachine.setCurrentBalanceType("Checking");
+            balanceField.setText(cashMachine.getAccountData().
+                    getBalanceString(cashMachine.getCurrentBalanceType()));
+            idMessage.setText("");
             }
             else idMessage.setText("No such ID");
 
@@ -112,15 +114,16 @@ public class CashMachineApp extends Application {
         });
 
         btnDeposit.setOnAction(e -> {
-            Double pastAmount = cashMachine.getAccountData().getBalance();
+            Double pastAmount = cashMachine.getAccountData().getBalance(cashMachine.getCurrentBalanceType());
             try {
                 Double amount = Double.parseDouble(amountField.getText());
                 cashMachine.deposit(amount);
             } catch (Exception ex){ }
-            balanceField.setText(cashMachine.getAccountData().getBalnaceString());
-            if (cashMachine.getAccountData().getCheckingBalance() >= 0)
+            balanceField.setText(cashMachine.getAccountData().
+                    getBalanceString(cashMachine.getCurrentBalanceType()));
+            if (cashMachine.getAccountData().getBalance(cashMachine.getCurrentBalanceType()) >= 0)
                 odMessage.setText("");
-            if (pastAmount == cashMachine.getAccountData().getBalance())
+            if (pastAmount == cashMachine.getAccountData().getBalance(cashMachine.getCurrentBalanceType()))
                 withdrawMessage.setText("Deposit failed");
             else
                 withdrawMessage.setText("");
@@ -129,15 +132,16 @@ public class CashMachineApp extends Application {
 
 
         btnWithdraw.setOnAction(e -> {
-            Double pastAmount = cashMachine.getAccountData().getBalance();
+            Double pastAmount = cashMachine.getAccountData().getBalance(cashMachine.getCurrentBalanceType());
             try {
             Double amount = Double.parseDouble(amountField.getText());
             cashMachine.withdraw(amount);
             } catch (Exception ex){ }
-            balanceField.setText(cashMachine.getAccountData().getBalnaceString());
-            if (cashMachine.getAccountData().getCheckingBalance() < 0)
+            balanceField.setText(cashMachine.getAccountData().
+                    getBalanceString(cashMachine.getCurrentBalanceType()));
+            if (cashMachine.getAccountData().getBalance(cashMachine.getCurrentBalanceType()) < 0)
                 odMessage.setText("This account is overdrawn");
-            if (pastAmount == cashMachine.getAccountData().getBalance())
+            if (pastAmount == cashMachine.getAccountData().getBalance(cashMachine.getCurrentBalanceType()))
                 withdrawMessage.setText("Withdraw failed");
             else
                 withdrawMessage.setText("");

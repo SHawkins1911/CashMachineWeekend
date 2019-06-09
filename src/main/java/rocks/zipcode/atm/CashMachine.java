@@ -13,6 +13,7 @@ public class CashMachine {
 
     private final Bank bank;
     private AccountData accountData = null;
+    private String currentBalanceType;
 
     public CashMachine(Bank bank) {
         this.bank = bank;
@@ -32,7 +33,7 @@ public class CashMachine {
     public void deposit(double amount) {
         if (accountData != null) {
             tryCall(
-                    () -> bank.deposit(accountData, amount),
+                    () -> bank.deposit(accountData, amount, currentBalanceType),
                     update
             );
         }
@@ -41,7 +42,7 @@ public class CashMachine {
     public void withdraw(double amount) {
         if (accountData != null) {
             tryCall(
-                    () -> bank.withdraw(accountData, amount),
+                    () -> bank.withdraw(accountData, amount, currentBalanceType),
                     update
             );
         }
@@ -75,5 +76,13 @@ public class CashMachine {
 
     public AccountData getAccountData() {
         return accountData;
+    }
+
+    public String getCurrentBalanceType() {
+        return currentBalanceType;
+    }
+
+    public void setCurrentBalanceType(String currentBalanceType) {
+        this.currentBalanceType = currentBalanceType;
     }
 }
