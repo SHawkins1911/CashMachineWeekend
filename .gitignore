@@ -105,3 +105,4 @@ target/*
 .classpath
 .settings
 .DS_Store
+src/main/java/rocks/zipcode/atm/.DS_Store
