@@ -3,6 +3,9 @@ package rocks.zipcode.atm;
 import rocks.zipcode.atm.bank.AccountData;
 import rocks.zipcode.atm.bank.Bank;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.Scanner;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
@@ -23,11 +26,14 @@ public class CashMachine {
         accountData = data;
     };
 
-    public void login(int id) {
+
+    public void login(String username, String password) {
         tryCall(
-                () -> bank.getAccountById(id),
+                () -> bank.getAccountByUsername(username),
                 update
         );
+        if (!accountData.getPassword().equals(password))
+            accountData = null;
     }
 
     public void deposit(double amount) {
@@ -71,6 +77,7 @@ public class CashMachine {
             }
         } catch (Exception e) {
             System.out.println("Error: " + e.getMessage());
+            throw new RuntimeException();
         }
     }
 
@@ -86,7 +93,22 @@ public class CashMachine {
         this.currentBalanceType = currentBalanceType;
     }
 
-    public void addAccount(Integer id, String name, String mail, String type){
+    public void addAccount(String userName, String password, String name, String mail, String type){
+        tryCall( () -> bank.addAccountTest(userName,password,name,mail,type),
+                data -> accountData = null
+        );
+    }
 
+    public Boolean isUsernameExist(String username){
+        return bank.getAccounts().containsKey(username);
+    }
+
+    public void changePassword(String newPassword) {
+        if (accountData != null) {
+            tryCall(
+                    () -> bank.changePassword(accountData,newPassword),
+                    update
+            );
+        }
     }
 }

@@ -40,11 +40,17 @@ public abstract class Account {
 
     private void updateBalance(double newBalance, String balanceType) {
         if (balanceType.equals("Checking"))
-            accountData = new AccountData(accountData.getId(), accountData.getName(), accountData.getEmail(),
+            accountData = new AccountData(accountData.getId(), accountData.getUserName(), accountData.getPassword(), accountData.getName(), accountData.getEmail(),
                 newBalance, accountData.getBalance("Saving"));
         if (balanceType.equals("Saving"))
-            accountData = new AccountData(accountData.getId(), accountData.getName(), accountData.getEmail(),
+            accountData = new AccountData(accountData.getId(), accountData.getUserName(), accountData.getPassword(), accountData.getName(), accountData.getEmail(),
                     accountData.getBalance("Checking"), newBalance);
+    }
+
+    public void changePassword(String newPassword) {
+        accountData = new AccountData(accountData.getId(), accountData.getUserName(), newPassword, accountData.getName(), accountData.getEmail(),
+                accountData.getBalance("Checking"), accountData.getBalance("Saving"));
+
     }
 }
 
