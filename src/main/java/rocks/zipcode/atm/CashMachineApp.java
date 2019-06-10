@@ -9,6 +9,7 @@ import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
@@ -19,6 +20,8 @@ import javafx.scene.Scene;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -66,7 +69,7 @@ public class CashMachineApp extends Application {
     private Text odMessage = new Text("");
     private Text withdrawMessage = new Text("");
 
-    private Parent createContentGrid(){
+    private Parent createContentGrid() {
         VBox root = new VBox(10, menuBar);
         root.setPrefSize(275,450);
         GridPane grid = new GridPane();
@@ -106,7 +109,11 @@ public class CashMachineApp extends Application {
 
         menu2Item1.setOnAction(e -> {
             infoWindow = new Stage();
-            infoWindow.setScene(new Scene(createInfoWindow()));
+            try {
+                infoWindow.setScene(new Scene(createInfoWindow()));
+            } catch (FileNotFoundException e1) {
+                e1.printStackTrace();
+            }
             infoWindow.setTitle("Info");
             infoWindow.show();
         });
@@ -189,6 +196,8 @@ public class CashMachineApp extends Application {
 
             setDisable(true);
 
+            userNameField.clear();
+            passwordField.clear();
             idField.clear();
             nameField.clear();
             mailField.clear();
@@ -401,9 +410,20 @@ public class CashMachineApp extends Application {
         return grid;
     }
 
-    private Parent createInfoWindow(){
-        VBox info = new VBox();
-        Image logo = new Image("file::zipCode.jpg");
+    private Parent createInfoWindow() throws FileNotFoundException {
+        VBox info = new VBox(10);
+        info.setAlignment(Pos.CENTER);
+        info.setPrefSize(350,250);
+        Image logo = new Image(new FileInputStream("src/main/java/rocks/zipcode/atm/zipCode.jpg"));
+        ImageView logoView = new ImageView(logo);
+
+        logoView.setFitHeight(200);
+        logoView.setFitWidth(300);
+
+        //Setting the preserve ratio of the image view
+        logoView.setPreserveRatio(true);
+        info.getChildren().add(logoView);
+        info.getChildren().add(new Text("Made by: Stefun Hawkin, Anish Patel and Joanna Hsiao"));
 
         return info;
     }
