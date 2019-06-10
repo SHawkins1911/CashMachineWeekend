@@ -69,8 +69,10 @@ public class CashMachineApp extends Application {
 
     private Parent createContentGrid() {
         VBox root = new VBox(10, menuBar);
+        setBackGroundtoGreen(root);
+        menuBar.setBackground(new Background(new BackgroundFill(Color.rgb(202, 237, 254), CornerRadii.EMPTY, Insets.EMPTY)));
+
         root.setPrefSize(275,450);
-        root.setBackground(new Background(new BackgroundFill(Color.rgb(203, 242, 174), CornerRadii.EMPTY, Insets.EMPTY)));
         GridPane grid = new GridPane();
         root.getChildren().add(grid);
 
@@ -342,6 +344,7 @@ public class CashMachineApp extends Application {
 
         formatGrid(grid);
         grid.setPrefSize(325,300);
+        setBackGroundtoGreen(grid);
         grid.setAlignment(Pos.CENTER);
 
         return grid;
@@ -402,6 +405,7 @@ public class CashMachineApp extends Application {
         grid.add(confirmBtn,                    2,5);
 
         formatGrid(grid);
+        setBackGroundtoGreen(grid);
         grid.setPrefSize(325,200);
         grid.setAlignment(Pos.CENTER);
 
@@ -410,6 +414,7 @@ public class CashMachineApp extends Application {
 
     private Parent createInfoWindow() throws FileNotFoundException {
         VBox info = new VBox(10);
+        setBackGroundtoGreen(info);
         info.setAlignment(Pos.CENTER);
         info.setPrefSize(350,250);
         Image logo = new Image(new FileInputStream("src/main/java/rocks/zipcode/atm/zipCode.jpg"));
@@ -459,7 +464,7 @@ public class CashMachineApp extends Application {
 
     }
 
-    private GridPane formatGrid(GridPane grid)
+    private void formatGrid(GridPane grid)
     {
         ColumnConstraints textColumnRight = new ColumnConstraints();
         textColumnRight.setHalignment(HPos.RIGHT);
@@ -467,7 +472,11 @@ public class CashMachineApp extends Application {
         //       grid.setGridLinesVisible(true);
         grid.setHgap(10);
         grid.setVgap(5);
-        return grid;
+    }
+
+    private void setBackGroundtoGreen(Region region)
+    {
+        region.setBackground(new Background(new BackgroundFill(Color.rgb(220, 242, 211), CornerRadii.EMPTY, Insets.EMPTY)));
     }
 }
 
