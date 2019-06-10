@@ -14,9 +14,6 @@ public final class AccountData {
     private final double checkingBalance;
     private final double savingsBalance;
 
-
-
-
     AccountData(int id, String userName, String password, String name, String email, double checkingBalance, double savingsBalance) {
         this.id = id;
         this.userName = userName;
@@ -26,7 +23,6 @@ public final class AccountData {
 
         this.checkingBalance = checkingBalance;
         this.savingsBalance = savingsBalance;
-
     }
 
     public Integer getId() {

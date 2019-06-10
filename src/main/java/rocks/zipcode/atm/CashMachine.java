@@ -94,10 +94,6 @@ public class CashMachine {
     }
 
     public void addAccount(String userName, String password, String name, String mail, String type){
-        bank.addAccount(userName,password,name,mail,type);
-    }
-
-    public void addAccountTest(String userName, String password, String name, String mail, String type){
         tryCall( () -> bank.addAccountTest(userName,password,name,mail,type),
                 data -> accountData = null
         );
@@ -105,5 +101,14 @@ public class CashMachine {
 
     public Boolean isUsernameExist(String username){
         return bank.getAccounts().containsKey(username);
+    }
+
+    public void changePassword(String newPassword) {
+        if (accountData != null) {
+            tryCall(
+                    () -> bank.changePassword(accountData,newPassword),
+                    update
+            );
+        }
     }
 }

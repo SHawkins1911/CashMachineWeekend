@@ -49,16 +49,6 @@ public class Bank {
         }
     }
 
-    public void addAccount(String userName, String password, String name, String mail, String type){
-        if (type.equals("Basic"))
-           accounts.put(userName, new BasicAccount(new AccountData(
-                nextIdCreation, userName, password, name, mail, 0, 0)));
-        if (type.equals("Premium"))
-            accounts.put(userName, new PremiumAccount(new AccountData(
-                    nextIdCreation, userName, password, name, mail, 0, 0)));
-        nextIdCreation+=1000;
-    }
-
     public Map<String, Account> getAccounts() {
         return accounts;
     }
@@ -78,7 +68,12 @@ public class Bank {
             nextIdCreation+=1000;
             return ActionResult.success(accounts.get(userName).getAccountData());
         }
+    }
 
+    public ActionResult<AccountData> changePassword(AccountData accountData, String newPassword) {
+        Account account = accounts.get(accountData.getUserName());
+        account.changePassword(newPassword);
 
+        return ActionResult.success(account.getAccountData());
     }
 }

@@ -7,7 +7,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
-import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
@@ -50,7 +49,7 @@ public class CashMachineApp extends Application {
     private MenuItem menuItem2 = new MenuItem("Change Password");
     private MenuItem menuItem3 = new MenuItem("Check Profile");
 
-    private MenuItem menu2Item1 = new MenuItem("Contact Steffun");
+    private MenuItem menu2Item1 = new MenuItem("Contact Stefun");
     private MenuItem menu2Item2 = new MenuItem("Contact Anish");
     private MenuItem menu2Item3 = new MenuItem("Contact Joanna");
 
@@ -66,18 +65,15 @@ public class CashMachineApp extends Application {
     private Parent createContentGrid(){
         VBox root = new VBox(10, menuBar);
         root.setPrefSize(275,450);
+        GridPane grid = new GridPane();
+        root.getChildren().add(grid);
+
         menuBar.getMenus().add(menu1);
-
-
         menu1.getItems().add(menuItem1);
         menu1.getItems().add(menuItem2);
         menu1.getItems().add(menuItem3);
 
         menuBar.getMenus().add(menu2);
-        MenuItem menu2Item1 = new MenuItem("Contact Stefun");
-        MenuItem menu2Item2 = new MenuItem("Contact Anish");
-        MenuItem menu2Item3 = new MenuItem("Contact Joanna");
-
         menu2.getItems().add(menu2Item1);
         menu2.getItems().add(menu2Item2);
         menu2.getItems().add(menu2Item3);
@@ -91,8 +87,17 @@ public class CashMachineApp extends Application {
             });
             newAccountWindow.show();
             mainWindow.hide();
+        });
 
-
+        menuItem2.setOnAction(e -> {
+            newAccountWindow = new Stage();
+            newAccountWindow.setScene(new Scene(changePasswordWindow()));
+            newAccountWindow.setTitle("Change password");
+            newAccountWindow.setOnCloseRequest(s -> {
+                mainWindow.show();
+            });
+            newAccountWindow.show();
+            mainWindow.hide();
         });
 
         balanceTypeBox.getItems().add("Checking");
@@ -105,16 +110,14 @@ public class CashMachineApp extends Application {
                     getBalanceString(cashMachine.getCurrentBalanceType()));
         });
 
-        GridPane grid = new GridPane();
-        root.getChildren().add(grid);
-
-        TextArea areaInfo = new TextArea();
-        areaInfo.setEditable(false);
 
         nameField.setEditable(false);
         mailField.setEditable(false);
         balanceField.setEditable(false);
-        amountField.setEditable(true);
+
+        idMessage.setFill(Color.RED);
+        odMessage.setFill(Color.RED);
+        withdrawMessage.setFill(Color.RED);
 
         setDisable(true);
 
@@ -122,7 +125,7 @@ public class CashMachineApp extends Application {
             try {
                 cashMachine.login(userNameField.getText(), passwordField.getText());
             } catch (Exception ex) { }
-            if (cashMachine.getAccountData() != null){
+            if (cashMachine.getAccountData() != null) {
             setDisable(false);
 
             idField.setText(cashMachine.getAccountData().getId().toString());
@@ -135,7 +138,6 @@ public class CashMachineApp extends Application {
             }
             else {
                 idMessage.setText("Incorrect ID or password");
-                idMessage.setFill(Color.RED);
             }
         });
 
@@ -153,10 +155,8 @@ public class CashMachineApp extends Application {
                 withdrawMessage.setText("Deposit failed");
             else
                 withdrawMessage.setText("");
-            withdrawMessage.setFill(Color.RED);
 
         });
-
 
         btnWithdraw.setOnAction(e -> {
             Double pastAmount = cashMachine.getAccountData().getBalance(cashMachine.getCurrentBalanceType());
@@ -172,9 +172,6 @@ public class CashMachineApp extends Application {
                 withdrawMessage.setText("Withdraw failed");
             else
                 withdrawMessage.setText("");
-            odMessage.setFill(Color.RED);
-            withdrawMessage.setFill(Color.RED);
-
         });
 
         btnLogout.setOnAction(e -> {
@@ -219,13 +216,7 @@ public class CashMachineApp extends Application {
 
         grid.setAlignment(Pos.CENTER);
 
-        ColumnConstraints textColumnRight = new ColumnConstraints();
-        textColumnRight.setHalignment(HPos.RIGHT);
-        grid.getColumnConstraints().add(textColumnRight);
-        //       grid.setGridLinesVisible(true);
-        grid.setHgap(10);
-        grid.setVgap(5);
-
+        formatGrid(grid);
 
         GridPane.setHalignment(btnLogin,HPos.CENTER);
         GridPane.setHalignment(btnLogout,HPos.CENTER);
@@ -262,6 +253,10 @@ public class CashMachineApp extends Application {
         Text passwordErr = new Text("");
         Text mailErr = new Text("");
 
+        idErr.setFill(Color.RED);
+        passwordErr.setFill(Color.RED);
+        mailErr.setFill(Color.RED);
+
         cancelBtn.setOnAction(c -> {
             newAccountWindow.close();
             mainWindow.show();
@@ -297,7 +292,7 @@ public class CashMachineApp extends Application {
             else idErr.setText("");
             if (isSuccess)
             {
-                cashMachine.addAccountTest(
+                cashMachine.addAccount(
                         newUserNameField.getText(),
                         newPasswordField.getText(),
                         newNameField.getText(),
@@ -327,22 +322,79 @@ public class CashMachineApp extends Application {
         grid.add(premiumButton,                 2,8);
         grid.add(cancelBtn,                     1,9);
         grid.add(createBtn,                     2,9);
-        ColumnConstraints textColumnRight = new ColumnConstraints();
-        textColumnRight.setHalignment(HPos.RIGHT);
-        grid.getColumnConstraints().add(textColumnRight);
-        //       grid.setGridLinesVisible(true);
-        grid.setPrefSize(350,300);
+
+        formatGrid(grid);
+        grid.setPrefSize(325,300);
         grid.setAlignment(Pos.CENTER);
-        grid.setHgap(10);
-        grid.setVgap(5);
 
         return grid;
     }
 
+    private Parent changePasswordWindow()
+    {
+        GridPane grid = new GridPane();
+
+        PasswordField oldPasswordField = new PasswordField();
+        PasswordField newPasswordField = new PasswordField();
+        PasswordField confirmPasswordField = new PasswordField();
+
+        Text oldPassErr = new Text("");
+        Text newPassNotMatchErr = new Text("");
+
+        Button cancelBtn = new Button("Cancel");
+        Button confirmBtn = new Button("Confirm");
+
+        oldPassErr.setFill(Color.RED);
+        newPassNotMatchErr.setFill(Color.RED);
+
+        cancelBtn.setOnAction(c -> {
+            newAccountWindow.close();
+            mainWindow.show();
+        });
+
+        confirmBtn.setOnAction(c -> {
+            Boolean isSuccess = true;
+            if (!cashMachine.getAccountData().getPassword().equals(oldPasswordField.getText())){
+                oldPassErr.setText("Incorrect password");
+                isSuccess = false;
+            } else oldPassErr.setText("");
+            if (!newPasswordField.getText().equals(confirmPasswordField.getText())) {
+                newPassNotMatchErr.setText("Password did not match");
+                isSuccess = false;
+            } else newPassNotMatchErr.setText("");
+
+            if (isSuccess)
+            {
+                cashMachine.changePassword(newPasswordField.getText());
+                newAccountWindow.close();
+                mainWindow.show();
+                passwordField.setText(newPasswordField.getText());
+            }
+        });
+
+
+        grid.add(new Text("Password:"),         0,0);
+        grid.add(oldPasswordField,              1,0,2,1);
+        grid.add(oldPassErr,                    1,1,2,1);
+        grid.add(new Text("New Password:"),     0,2);
+        grid.add(newPasswordField,              1,2,2,1);
+        grid.add(new Text("Confirm Password:"), 0,3);
+        grid.add(confirmPasswordField,          1,3,2,1);
+        grid.add(newPassNotMatchErr,            1,4,2,1);
+        grid.add(cancelBtn,                     1,5);
+        grid.add(confirmBtn,                    2,5);
+
+        formatGrid(grid);
+        grid.setPrefSize(325,200);
+        grid.setAlignment(Pos.CENTER);
+
+        return grid;
+    }
 
     @Override
     public void start(Stage stage) throws Exception {
         mainWindow = stage;
+        mainWindow.setTitle("ZipCloudBank");
         mainWindow.setScene(new Scene(createContentGrid()));
 
         mainWindow.show();
@@ -355,6 +407,7 @@ public class CashMachineApp extends Application {
     private void setDisable(Boolean value) {
 
         menuItem1.setDisable(!value);
+        menuItem2.setDisable(value);
         userNameField.setEditable(value);
         passwordField.setEditable(value);
         btnLogin.setDisable(!value);
@@ -369,5 +422,16 @@ public class CashMachineApp extends Application {
         btnWithdraw.setDisable(value);
         btnLogout.setDisable(value);
 
+    }
+
+    private GridPane formatGrid(GridPane grid)
+    {
+        ColumnConstraints textColumnRight = new ColumnConstraints();
+        textColumnRight.setHalignment(HPos.RIGHT);
+        grid.getColumnConstraints().add(textColumnRight);
+        //       grid.setGridLinesVisible(true);
+        grid.setHgap(10);
+        grid.setVgap(5);
+        return grid;
     }
 }
