@@ -11,14 +11,21 @@ import java.util.Map;
 public class Bank {
 
     private Map<String, Account> accounts = new HashMap<>();
-    private Integer nextIdCreation = 3000;
+    private Integer nextIdCreation = 5000;
 
     public Bank() {
         accounts.put("example1", new BasicAccount(new AccountData(
-                1000, "example1","pass", "Example 1", "example1@gmail.com", 500, 500)));
+                1000, "example1","pass", "Example 1", "example1@gmail.com", 500, 300)));
 
         accounts.put("example2", new PremiumAccount(new AccountData(
                 2000, "example2","pass","Example 2", "example2@gmail.com", 200, 500)));
+
+        accounts.put("johnDoe", new BasicAccount(new AccountData(
+                3000, "johnDoe","johnjohn", "John Doe", "johndoe@gmail.com", 300, 1000)));
+
+        accounts.put("janeDoe", new PremiumAccount(new AccountData(
+                4000, "janeDoe","janejane","Jane Doe", "janedoe@live.com", 3000, 234000)));
+
     }
 
     public ActionResult<AccountData> getAccountByUsername(String username) {
