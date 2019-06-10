@@ -27,11 +27,13 @@ public class CashMachine {
     };
 
 
-    public void login(int id) {
+    public void login(String username, String password) {
         tryCall(
-                () -> bank.getAccountById(id),
+                () -> bank.getAccountByUsername(username),
                 update
         );
+        if (!accountData.getPassword().equals(password))
+            accountData = null;
     }
 
     public void deposit(double amount) {
@@ -75,6 +77,7 @@ public class CashMachine {
             }
         } catch (Exception e) {
             System.out.println("Error: " + e.getMessage());
+            throw new RuntimeException();
         }
     }
 
@@ -88,5 +91,24 @@ public class CashMachine {
 
     public void setCurrentBalanceType(String currentBalanceType) {
         this.currentBalanceType = currentBalanceType;
+    }
+
+    public void addAccount(String userName, String password, String name, String mail, String type){
+        tryCall( () -> bank.addAccountTest(userName,password,name,mail,type),
+                data -> accountData = null
+        );
+    }
+
+    public Boolean isUsernameExist(String username){
+        return bank.getAccounts().containsKey(username);
+    }
+
+    public void changePassword(String newPassword) {
+        if (accountData != null) {
+            tryCall(
+                    () -> bank.changePassword(accountData,newPassword),
+                    update
+            );
+        }
     }
 }

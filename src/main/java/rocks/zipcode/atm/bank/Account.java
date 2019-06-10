@@ -46,5 +46,11 @@ public abstract class Account {
             accountData = new AccountData(accountData.getId(), accountData.getUserName(), accountData.getPassword(), accountData.getName(), accountData.getEmail(),
                     accountData.getBalance("Checking"), newBalance);
     }
+
+    public void changePassword(String newPassword) {
+        accountData = new AccountData(accountData.getId(), accountData.getUserName(), newPassword, accountData.getName(), accountData.getEmail(),
+                accountData.getBalance("Checking"), accountData.getBalance("Saving"));
+
+    }
 }
 

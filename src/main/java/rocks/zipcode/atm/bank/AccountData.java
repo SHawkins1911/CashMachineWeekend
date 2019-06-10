@@ -5,7 +5,7 @@ package rocks.zipcode.atm.bank;
  */
 public final class AccountData {
 
-    private final int id;
+    private final Integer id;
     private final String name;
     private final String email;
     private final String password;
@@ -13,9 +13,6 @@ public final class AccountData {
 
     private final double checkingBalance;
     private final double savingsBalance;
-
-
-
 
     AccountData(int id, String userName, String password, String name, String email, double checkingBalance, double savingsBalance) {
         this.id = id;
@@ -26,10 +23,9 @@ public final class AccountData {
 
         this.checkingBalance = checkingBalance;
         this.savingsBalance = savingsBalance;
-
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
