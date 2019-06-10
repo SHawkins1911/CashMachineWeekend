@@ -15,29 +15,42 @@ public abstract class Account {
         return accountData;
     }
 
-    public void deposit(int amount) {
-        updateBalance(getBalance() + amount);
+    public void deposit(double amount, String balanceType) {
+        if (amount > 0) {
+                updateBalance(getBalance(balanceType) + amount, balanceType);
+        }
     }
 
-    public boolean withdraw(int amount) {
-        if (canWithdraw(amount)) {
-            updateBalance(getBalance() - amount);
+    public boolean withdraw(double amount, String balanceType) {
+        if (amount > 0 && canWithdraw(amount, balanceType)) {
+            updateBalance(getBalance(balanceType) - amount, balanceType);
             return true;
         } else {
             return false;
         }
     }
 
-    protected boolean canWithdraw(int amount) {
-        return getBalance() >= amount;
+    protected boolean canWithdraw(double amount, String BalanceType) {
+            return getBalance(BalanceType) >= amount;
     }
 
-    public int getBalance() {
-        return accountData.getBalance();
+    public double getBalance(String balanceType) {
+        return accountData.getBalance(balanceType);
     }
 
-    private void updateBalance(int newBalance) {
-        accountData = new AccountData(accountData.getId(), accountData.getName(), accountData.getEmail(),
-                newBalance);
+    private void updateBalance(double newBalance, String balanceType) {
+        if (balanceType.equals("Checking"))
+            accountData = new AccountData(accountData.getId(), accountData.getUserName(), accountData.getPassword(), accountData.getName(), accountData.getEmail(),
+                newBalance, accountData.getBalance("Saving"));
+        if (balanceType.equals("Saving"))
+            accountData = new AccountData(accountData.getId(), accountData.getUserName(), accountData.getPassword(), accountData.getName(), accountData.getEmail(),
+                    accountData.getBalance("Checking"), newBalance);
+    }
+
+    public void changePassword(String newPassword) {
+        accountData = new AccountData(accountData.getId(), accountData.getUserName(), newPassword, accountData.getName(), accountData.getEmail(),
+                accountData.getBalance("Checking"), accountData.getBalance("Saving"));
+
     }
 }
+
