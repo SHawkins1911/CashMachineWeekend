@@ -50,7 +50,7 @@ public class CashMachineApp extends Application {
     private MenuBar menuBar = new MenuBar();
     private MenuItem menuItem1 = new MenuItem("Create Account");
     private MenuItem menuItem2 = new MenuItem("Change Password");
-    private MenuItem menuItem3 = new MenuItem("Check Profile");
+//    private MenuItem menuItem3 = new MenuItem("Check Profile");
 
     private MenuItem menu2Item1 = new MenuItem("Info...");
 
@@ -79,7 +79,7 @@ public class CashMachineApp extends Application {
         menuBar.getMenus().add(menu1);
         menu1.getItems().add(menuItem1);
         menu1.getItems().add(menuItem2);
-        menu1.getItems().add(menuItem3);
+//        menu1.getItems().add(menuItem3);
 
         menuBar.getMenus().add(menu2);
         menu2.getItems().add(menu2Item1);
