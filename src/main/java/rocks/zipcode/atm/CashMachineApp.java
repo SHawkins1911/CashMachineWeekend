@@ -1,6 +1,7 @@
 package rocks.zipcode.atm;
 
 import javafx.geometry.HPos;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.control.Button;
@@ -18,7 +19,6 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
-import java.awt.*;
 
 
 /**
@@ -62,7 +62,7 @@ public class CashMachineApp extends Application {
 
     private Parent createContentGrid(){
         VBox root = new VBox(10, menuBar);
-        root.setPrefSize(275,375);
+        root.setPrefSize(275,350);
         menuBar.getMenus().add(menu1);
 
 
@@ -100,6 +100,7 @@ public class CashMachineApp extends Application {
         });
 
         GridPane grid = new GridPane();
+        root.setBackground(new Background(new BackgroundFill(Color.LIGHTGREEN, CornerRadii.EMPTY, Insets.EMPTY)));
         root.getChildren().add(grid);
 
         TextArea areaInfo = new TextArea();
