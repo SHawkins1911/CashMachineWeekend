@@ -11,6 +11,7 @@ import java.util.Map;
 public class Bank {
 
     private Map<String, Account> accounts = new HashMap<>();
+    private Integer nextIdCreation = 3000;
 
     public Bank() {
         accounts.put("example1", new BasicAccount(new AccountData(
@@ -31,14 +32,14 @@ public class Bank {
     }
 
     public ActionResult<AccountData> deposit(AccountData accountData, double amount, String balanceType) {
-        Account account = accounts.get(accountData.getId());
+        Account account = accounts.get(accountData.getUserName());
         account.deposit(amount, balanceType);
 
         return ActionResult.success(account.getAccountData());
     }
 
     public ActionResult<AccountData> withdraw(AccountData accountData, double amount, String balanceType) {
-        Account account = accounts.get(accountData.getId());
+        Account account = accounts.get(accountData.getUserName());
         boolean ok = account.withdraw(amount, balanceType);
 
         if (ok) {
@@ -48,12 +49,36 @@ public class Bank {
         }
     }
 
-    public void addAccount(Integer id,String userName, String password, String name, String mail, String type){
+    public void addAccount(String userName, String password, String name, String mail, String type){
         if (type.equals("Basic"))
            accounts.put(userName, new BasicAccount(new AccountData(
-                id, userName, password, name, mail, 0, 0)));
+                nextIdCreation, userName, password, name, mail, 0, 0)));
         if (type.equals("Premium"))
             accounts.put(userName, new PremiumAccount(new AccountData(
-                    id, userName, password, name, mail, 0, 0)));
+                    nextIdCreation, userName, password, name, mail, 0, 0)));
+        nextIdCreation+=1000;
+    }
+
+    public Map<String, Account> getAccounts() {
+        return accounts;
+    }
+
+    public ActionResult<AccountData> addAccountTest(String userName, String password, String name, String mail, String type){
+        if (accounts.containsKey(userName))
+        {
+            System.out.println("username dupe");
+            return ActionResult.fail("username " + userName +" already existed");}
+        else {
+            if (type.equals("Basic"))
+                accounts.put(userName, new BasicAccount(new AccountData(
+                        nextIdCreation, userName, password, name, mail, 0, 0)));
+            if (type.equals("Premium"))
+                accounts.put(userName, new PremiumAccount(new AccountData(
+                        nextIdCreation, userName, password, name, mail, 0, 0)));
+            nextIdCreation+=1000;
+            return ActionResult.success(accounts.get(userName).getAccountData());
+        }
+
+
     }
 }

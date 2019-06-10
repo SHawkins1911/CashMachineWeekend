@@ -27,11 +27,13 @@ public class CashMachine {
     };
 
 
-    public void login(String username) {
+    public void login(String username, String password) {
         tryCall(
                 () -> bank.getAccountByUsername(username),
                 update
         );
+        if (!accountData.getPassword().equals(password))
+            accountData = null;
     }
 
     public void deposit(double amount) {
@@ -75,6 +77,7 @@ public class CashMachine {
             }
         } catch (Exception e) {
             System.out.println("Error: " + e.getMessage());
+            throw new RuntimeException();
         }
     }
 
@@ -90,7 +93,17 @@ public class CashMachine {
         this.currentBalanceType = currentBalanceType;
     }
 
-    public void addAccount(Integer id,String userName, String password, String name, String mail, String type){
-        bank.addAccount(id,userName,password,name,mail,type);
+    public void addAccount(String userName, String password, String name, String mail, String type){
+        bank.addAccount(userName,password,name,mail,type);
+    }
+
+    public void addAccountTest(String userName, String password, String name, String mail, String type){
+        tryCall( () -> bank.addAccountTest(userName,password,name,mail,type),
+                data -> accountData = null
+        );
+    }
+
+    public Boolean isUsernameExist(String username){
+        return bank.getAccounts().containsKey(username);
     }
 }
