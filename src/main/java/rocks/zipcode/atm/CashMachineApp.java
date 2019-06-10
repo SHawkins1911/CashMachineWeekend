@@ -8,6 +8,7 @@ import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
@@ -29,6 +30,7 @@ public class CashMachineApp extends Application {
 
     private Stage mainWindow;
     private Stage newAccountWindow;
+    private Stage infoWindow;
 
     private Menu menu1 = new Menu("Account");
     private Menu menu2 = new Menu("Help");
@@ -49,9 +51,11 @@ public class CashMachineApp extends Application {
     private MenuItem menuItem2 = new MenuItem("Change Password");
     private MenuItem menuItem3 = new MenuItem("Check Profile");
 
-    private MenuItem menu2Item1 = new MenuItem("Contact Stefun");
-    private MenuItem menu2Item2 = new MenuItem("Contact Anish");
-    private MenuItem menu2Item3 = new MenuItem("Contact Joanna");
+    private MenuItem menu2Item1 = new MenuItem("Info...");
+
+//    private MenuItem menu2Item1 = new MenuItem("Contact Stefun");
+//    private MenuItem menu2Item2 = new MenuItem("Contact Anish");
+//    private MenuItem menu2Item3 = new MenuItem("Contact Joanna");
 
     private Button btnLogin = new Button("Login");
     private Button btnDeposit = new Button("Deposit");
@@ -75,8 +79,8 @@ public class CashMachineApp extends Application {
 
         menuBar.getMenus().add(menu2);
         menu2.getItems().add(menu2Item1);
-        menu2.getItems().add(menu2Item2);
-        menu2.getItems().add(menu2Item3);
+//        menu2.getItems().add(menu2Item2);
+//        menu2.getItems().add(menu2Item3);
 
         menuItem1.setOnAction(e -> {
             newAccountWindow = new Stage();
@@ -98,6 +102,13 @@ public class CashMachineApp extends Application {
             });
             newAccountWindow.show();
             mainWindow.hide();
+        });
+
+        menu2Item1.setOnAction(e -> {
+            infoWindow = new Stage();
+            infoWindow.setScene(new Scene(createInfoWindow()));
+            infoWindow.setTitle("Info");
+            infoWindow.show();
         });
 
         balanceTypeBox.getItems().add("Checking");
@@ -389,6 +400,13 @@ public class CashMachineApp extends Application {
         grid.setAlignment(Pos.CENTER);
 
         return grid;
+    }
+
+    private Parent createInfoWindow(){
+        VBox info = new VBox();
+        Image logo = new Image("file::zipCode.jpg");
+
+        return info;
     }
 
     @Override
